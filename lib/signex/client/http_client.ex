@@ -18,6 +18,7 @@ defmodule Signex.Client.HttpClient do
         Signex.Endpoints.Users.get()
         Signex.Endpoints.Document.post(%{name: "Contract"})
   """
+  alias Signex.Client.Request
 
   defmacro __using__(opts) do
     quote do
@@ -27,21 +28,25 @@ defmodule Signex.Client.HttpClient do
 
       def post(body, opts \\ []) do
         url = "#{@endpoint}"
+        Request.request(:post, url, body, opts)
         IO.puts("POST #{url} with #{inspect(body)}, opts: #{inspect(opts)}")
       end
 
       def get(opts \\ []) do
         url = "#{@endpoint}"
+        Request.request(:get, url, nil, opts)
         IO.puts("GET #{url}, opts: #{inspect(opts)}")
       end
 
       def patch(body, opts \\ []) do
         url = "#{@endpoint}"
+        Request.request(:patch, url, body, opts)
         IO.puts("PATCH #{url} with #{inspect(body)}, opts: #{inspect(opts)}")
       end
 
       def delete(opts \\ []) do
         url = "#{@endpoint}"
+        Request.request(:delete, url, nil, opts)
         IO.puts("DELETE #{url}, opts: #{inspect(opts)}")
       end
     end
