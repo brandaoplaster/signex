@@ -1,6 +1,38 @@
 defmodule Signex.Structures.Envelope do
   @moduledoc """
+  A module responsible for creating and validating envelopes.
 
+  An envelope is a structure used to define a set of parameters required for generating and handling documents in a specific context. This module provides functionality to:
+
+  - Create an envelope with given attributes.
+  - Validate that all required fields are present.
+  - Ensure the fields are of the correct types.
+  - Validate the format of certain fields (e.g., `deadline_at`).
+  - Check that the `remind_interval` field contains an allowed value.
+
+  ## Types
+
+    - `t()`: A struct representing the envelope with the following fields:
+      - `:name` (String) - The name of the envelope.
+      - `:locale` (String) - The locale of the envelope.
+      - `:auto_close` (boolean) - Whether the envelope auto-closes.
+      - `:remind_interval` (String) - The reminder interval for the envelope (e.g., "1", "2", "7").
+      - `:block_after_refusal` (boolean) - Whether the envelope should block after refusal.
+      - `:deadline_at` (String, optional) - The deadline for the envelope in the format `YYYY-MM-DDTHH:MM:SSZ`.
+      - `:default_subject` (String | nil, optional) - The default subject for the envelope.
+      - `:default_message` (String | nil, optional) - The default message for the envelope.
+
+  ## Functions
+
+    - `build(attrs)`: Receives a map with attributes and returns:
+      - `{:ok, %Signex.Structures.Envelope{}}` if all attributes are valid.
+      - `{:error, reason}` if any attribute is invalid, with the `reason` being a descriptive error message.
+
+    - Private helper functions:
+      - `validate_required(attrs)`: Validates that all required fields are present in the given attributes.
+      - `validate_types(attrs)`: Validates that the attributes are of the correct types.
+      - `validate_deadline_format(attrs)`: Validates that the `deadline_at` field, if present, is in the correct format (`YYYY-MM-DDTHH:MM:SSZ`).
+      - `validate_remind_inverval(attrs)`: Validates that the `remind_interval` field is one of the allowed values (`"1"`, `"2"`, `"3"`, `"7"`, `"14"`).
   """
 
   @enforce_keys [:name, :locale, :auto_close, :remind_interval, :block_after_refusal]
