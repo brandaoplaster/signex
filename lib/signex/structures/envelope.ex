@@ -85,11 +85,4 @@ defmodule Signex.Structures.Envelope do
         {:error, "Invalid remind_interval, Allowed values: #{invalid_values}"}
     end
   end
-
-  defp validate_required(attrs) do
-    case Enum.all?(@required_keys, &Map.has_key?(attrs, &1)) do
-      true -> :ok
-      false -> {:error, "Missing required fields: #{inspect(@required_keys -- Map.keys(attrs))}"}
-    end
-  end
 end
