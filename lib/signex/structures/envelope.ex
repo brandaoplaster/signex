@@ -34,7 +34,7 @@ defmodule Signex.Structures.Envelope do
     with :ok <- validate_required(attrs),
          :ok <- validate_types(attrs),
          :ok <- validate_deadline_format(attrs),
-         :ok <- validate_remind_inverval(attrs) do
+         :ok <- validate_validate_remind_interval(attrs) do
       {:ok, struct(__MODULE__, attrs)}
     else
       {:error, reason} -> {:error, reason}
@@ -48,6 +48,7 @@ defmodule Signex.Structures.Envelope do
     end
   end
 
+  @spec validate_types(map()) :: :ok | {:error, String.t()}
   defp validate_types(attrs) do
     validates = %{
       name: &is_binary/1,
@@ -68,6 +69,7 @@ defmodule Signex.Structures.Envelope do
     end
   end
 
+  @spec validate_deadline_format(map()) :: :ok | {:error, String.t()}
   defp validate_deadline_format(%{deadline_at: deadline_at}) do
     case Regex.match?(~r/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/, deadline_at) do
       true -> :ok
@@ -75,7 +77,8 @@ defmodule Signex.Structures.Envelope do
     end
   end
 
-  defp validate_remind_inverval(%{remind_interval: remind_interval}) do
+  @spec validate_validate_remind_interval(map()) :: :ok | {:error, String.t()}
+  defp validate_validate_remind_interval(%{remind_interval: remind_interval}) do
     case remind_interval in @valid_remind_intervals do
       true ->
         :ok
