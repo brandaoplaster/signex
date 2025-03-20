@@ -1,7 +1,23 @@
 defmodule Signex.Structures.Document do
   @moduledoc """
+  Defines a structure for representing a document with a filename and base64-encoded content.
 
+  This module provides a `Document` struct with two required fields: `filename` and `content_base64`,
+  both represented as strings. It includes a `build/1` function to safely construct a `Document`
+  struct from a map of attributes, enforcing the presence of required fields and validating their types.
+
+  ## Struct Fields
+  - `filename`: A string representing the name of the document.
+  - `content_base64`: A string containing the base64-encoded content of the document.
+
+  ## Usage
+      iex> Signex.Structures.Document.build(%{filename: "example.pdf", content_base64: "SGVsbG8gV29ybGQ="})
+      {:ok, %Signex.Structures.Document{filename: "example.pdf", content_base64: "SGVsbG8gV29ybGQ="}}
+
+      iex> Signex.Structures.Document.build(%{filename: "example.pdf"})
+      {:error, "Missing required fields: [:content_base64]"}
   """
+
   @enforce_keys [:filename, :content_base64]
   defstruct [:filename, :content_base64]
 
