@@ -1,6 +1,38 @@
 defmodule Signex.Structures.CommunicateEvent do
   @moduledoc """
+  Defines a structure and validation logic for communication events related to signature requests.
 
+  This module provides a struct `t()` to represent communication preferences for signature-related events,
+  including requesting a signature, sending reminders, and notifying about signed documents.
+  It validates communication channels against predefined options and builds the struct from a map of attributes.
+
+  ## Structure Fields
+  - `:signature_request` - Channel for requesting signatures (options: "sms", "email", "whatsapp").
+  - `:signature_reminder` - Channel for sending reminders (options: "email", "whatsapp").
+  - `:document_signed` - Channel for notifying about signed documents (options: "email", "whatsapp").
+
+  ## Default Value
+  The default communication channel is `"email"` when a value is not provided.
+
+  ## Usage
+  The primary function is `build/1`, which takes a map of attributes and returns either:
+  - `{:ok, %Signex.Structures.CommunicateEvent{}}` on successful validation and struct creation.
+  - `{:error, reason}` if validation fails.
+
+  ### Example
+      iex> Signex.Structures.CommunicateEvent.build(%{
+      ...>   signature_request: "whatsapp",
+      ...>   signature_reminder: "email",
+      ...>   document_signed: "whatsapp"
+      ...> })
+      {:ok, %Signex.Structures.CommunicateEvent{
+        signature_request: "whatsapp",
+        signature_reminder: "email",
+        document_signed: "whatsapp"
+      }}
+
+      iex> Signex.Structures.CommunicateEvent.build(%{signature_request: "invalid"})
+      {:error, "Invalid value for signature_request"}
   """
 
   @enforce_keys [:signature_request, :document_signed, :signature_reminder]
