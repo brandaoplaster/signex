@@ -28,6 +28,7 @@ defmodule Signex.Structures.Signatory do
           location_required_enabled: boolean()
         }
 
+  @spec build(map()) :: {:ok, t()} | {:error, term()}
   def build(attrs) do
     with :ok <- validate_types(attrs),
          :ok <- validate_required(attrs) do
@@ -37,6 +38,7 @@ defmodule Signex.Structures.Signatory do
     end
   end
 
+  @spec validate_required(map()) :: :ok | {:error, String.t()}
   defp validate_required(attrs) do
     missing =
       @enforce_keys
@@ -49,8 +51,10 @@ defmodule Signex.Structures.Signatory do
     end
   end
 
+  @spec present?(map(), atom()) :: boolean()
   defp present?(attrs, key), do: Map.has_key?(attrs, key)
 
+  @spec validate_types(map()) :: :ok | {:error, {:invalid_types, [{atom(), String.t()}]}}
   defp validate_types(attrs) do
     validations = [
       {:name, &is_binary/1, "must be a string"},
@@ -81,6 +85,7 @@ defmodule Signex.Structures.Signatory do
     end
   end
 
+  @spec validate_date(term()) :: boolean()
   defp validate_date(%Date{}), do: true
   defp validate_date(_), do: false
 end
