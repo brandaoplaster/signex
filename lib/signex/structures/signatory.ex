@@ -29,7 +29,12 @@ defmodule Signex.Structures.Signatory do
         }
 
   def build(attrs) do
-    validate_required(attrs)
+    with :ok <- validate_types(attrs),
+         :ok <- validate_required(attrs) do
+      {:ok, struct(__MODULE__, attrs)}
+    else
+      {:error, reason} -> {:error, reason}
+    end
   end
 
   defp validate_required(attrs) do
@@ -45,4 +50,37 @@ defmodule Signex.Structures.Signatory do
   end
 
   defp present?(attrs, key), do: Map.has_key?(attrs, key)
+
+  defp validate_types(attrs) do
+    validations = [
+      {:name, &is_binary/1, "must be a string"},
+      {:email, &is_binary/1, "must be a string"},
+      {:phone_number, &is_binary/1, "must be a string"},
+      {:birthday, &validate_date/1, "must be a valid date"},
+      {:has_document, &is_binary/1, "must be a string"},
+      {:documentation, &is_binary/1, "must be a string"},
+      {:refusable, &is_boolean/1, "must be a boolean"},
+      {:group, &is_integer/1, "must be an integer"},
+      {:location_required_enabled, &is_boolean/1, "must be a boolean"}
+    ]
+
+    errors =
+      Enum.reduce(validations, [], fn {key, validator, message}, acc ->
+        value = Map.get(attrs, key)
+
+        if value != nil and not validator.(value) do
+          [{key, message} | acc]
+        else
+          acc
+        end
+      end)
+
+    case errors do
+      [] -> :ok
+      errors -> {:error, {:invalid_types, Enum.reverse(errors)}}
+    end
+  end
+
+  defp validate_date(%Date{}), do: true
+  defp validate_date(_), do: false
 end
