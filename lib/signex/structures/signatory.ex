@@ -1,5 +1,47 @@
 defmodule Signex.Structures.Signatory do
   @moduledoc """
+  Structure representing a signatory in a signing process.
+
+  This module defines the `Signatory` structure with mandatory and optional fields,
+  along with functions for validation and instance construction. It is designed to
+  ensure that signatory data is consistent in terms of required field presence and
+  expected data types.
+
+  ## Required Fields
+  - `:name` - The signatory's name (String).
+  - `:email` - The signatory's email address (String).
+  - `:phone_number` - The signatory's phone number (String).
+
+  ## Optional Fields
+  - `:birthday` - Date of birth (Date).
+  - `:has_document` - Document indicator (String).
+  - `:documentation` - Document data (String).
+  - `:refusable` - Whether the signatory can refuse (boolean).
+  - `:group` - Signatory group (integer).
+  - `:location_required_enabled` - Whether location is required (boolean).
+
+  ## Usage
+  The main function `build/1` creates a `Signatory` instance from a map of attributes,
+  validating required fields and data types.
+
+  ### Example
+      iex> Signex.Structures.Signatory.build(%{
+      ...>   name: "John Smith",
+      ...>   email: "john@example.com",
+      ...>   phone_number: "+5511999999999",
+      ...>   birthday: ~D[1990-01-01],
+      ...>   refusable: false
+      ...> })
+      {:ok, %Signex.Structures.Signatory{
+        name: "John Smith",
+        email: "john@example.com",
+        phone_number: "+5511999999999",
+        birthday: ~D[1990-01-01],
+        refusable: false
+      }}
+
+      iex> Signex.Structures.Signatory.build(%{name: "John"})
+      {:error, "Missing required fields: [\"email\", \"phone_number\"]"}
 
   """
 
