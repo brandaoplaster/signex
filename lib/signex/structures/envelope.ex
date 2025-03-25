@@ -108,6 +108,7 @@ defmodule Signex.Structures.Envelope do
       false -> {:error, "Invalid deadline_at format, expected (YYYY-MM-DDTHH:MM:SSZ)"}
     end
   end
+  defp validate_deadline_format(_attrs), do: :ok
 
   @spec validate_validate_remind_interval(map()) :: :ok | {:error, String.t()}
   defp validate_validate_remind_interval(%{remind_interval: remind_interval}) do
