@@ -26,7 +26,10 @@ defmodule Signex.Client.Request do
   @type url :: String.t()
   @type body :: nil | map() | String.t()
   @type opts :: Keyword.t()
-  @type response :: {:ok, map()} | {:error, {:client_error | :server_error | :unexpected_status | :request_failed, any()}}
+  @type response ::
+          {:ok, map()}
+          | {:error,
+             {:client_error | :server_error | :unexpected_status | :request_failed, any()}}
 
   @client_error_range 400..499
   @server_error_range 500..599
