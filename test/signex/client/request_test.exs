@@ -9,8 +9,7 @@ defmodule Signex.Client.RequestTest do
   @url "https://api.example.com"
 
   setup do
-    TeslaMock
-    |> stub(:call, fn env, _opts ->
+    stub(TeslaMock, :call, fn env, _opts ->
       case env do
         %Tesla.Env{method: :get, url: @url} ->
           {:ok, %Tesla.Env{status: 200, body: %{"data" => "success"}}}
