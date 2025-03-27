@@ -117,7 +117,7 @@ defmodule Signex.Structures.Envelope do
         :ok
 
       false ->
-        invalid_values = @valid_remind_intervals |> Enum.join(", ")
+        invalid_values =  Enum.join(@valid_remind_intervals, ", ")
         {:error, "Invalid remind_interval, Allowed values: #{invalid_values}"}
     end
   end
