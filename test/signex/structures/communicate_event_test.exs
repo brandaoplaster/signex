@@ -17,7 +17,6 @@ defmodule Signex.Structures.CommunicateEventTest do
       assert event.document_signed == "whatsapp"
     end
 
-    # TODO: check commented tests
     # test "uses default 'email' when no fields are provided" do
     #   attrs = %{}
 
