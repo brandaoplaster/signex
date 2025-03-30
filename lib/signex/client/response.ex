@@ -19,7 +19,6 @@ defmodule Signex.Client.Response do
     {:error, "Erro na requisição: #{format_error_reason(reason)}"}
   end
 
-  # Sucesso (201) - Extrai o ID do envelope
   defp handle_success(%Tesla.Env{body: %{"data" => %{"id" => id}}}) do
     {:ok, id}
   end
@@ -28,7 +27,6 @@ defmodule Signex.Client.Response do
     {:error, "Resposta 201 inválida: #{inspect(body)}"}
   end
 
-  # Erros (400, 422, 503)
   defp handle_error(status, %{"errors" => errors}) when is_list(errors) do
     error_details = Enum.map_join(errors, "; ", &format_error_detail/1)
     {:error, "Falha na requisição (status #{status}): #{error_details}"}
@@ -38,7 +36,6 @@ defmodule Signex.Client.Response do
     {:error, "Falha na requisição (status #{status}): #{inspect(body)}"}
   end
 
-  # Formata detalhes de erro da API
   defp format_error_detail(%{
          "code" => code,
          "detail" => detail,
@@ -59,7 +56,6 @@ defmodule Signex.Client.Response do
     inspect(error)
   end
 
-  # Formata erro do Tesla
   defp format_error_reason(%Tesla.Error{reason: reason}), do: inspect(reason)
   defp format_error_reason(reason), do: inspect(reason)
 end
