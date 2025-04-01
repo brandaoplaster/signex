@@ -1,4 +1,19 @@
 defmodule Signex.Client.Responses.DocumentResponse do
+  @moduledoc """
+    Defines a structure for document-related responses in the Signex client.
+
+    This module represents the response structure for document operations,
+    containing essential metadata about a document such as its identifier,
+    status, and timestamps.
+
+    ## Fields
+    - `id`: Unique identifier of the document
+    - `status`: Current status of the document
+    - `filename`: Name of the document file
+    - `created`: Timestamp of document creation
+    - `modified`: Timestamp of last document modification
+  """
+
   @behaviour Signex.Client.Responses.ResponseBehaviour
 
   defstruct [
